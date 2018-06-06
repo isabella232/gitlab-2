@@ -59,18 +59,18 @@ class Gitlab::Client
           parser: ::Gitlab::Request::Parser)
     end
 
-    # Download Job Artifact
+    # Download Job Artifacts
     #
     # @example
     #   Gitlab.job_artifacts_download(1, "master", "release")
     #   Gitlab.job_artifacts_download("project", "master", "release")
     #
-    # @param  [Integer, String] id, The ID or name of a project.
-    # @param  [String]  ref, Ref Name
-    # @param  [String]  job, jobname
+    # @param  [Integer, String] id, The ID or name of a project (can be namespace/project, when required).
+    # @param  [String]  ref, The branch or pipeline.
+    # @param  [String]  job, The job name, as specified in gitlab-ci.
     # @return [Array<Gitlab::ObjectifiedHash>]
-    def job_artifacts_download(project_id, ref_name, job_name)
-      get("/projects/#{url_encode project_id}/jobs/artifacts/#{ref_name}/download", query: { job: job_name },
+    def job_artifacts_download(project_id, branch, job)
+      get("/projects/#{url_encode project_id}/jobs/artifacts/#{ref}/download", query: {job: job},
                                                                                     format: nil,
                                                                                     headers: { Accept: 'text/plain' },
                                                                                     parser: ::Gitlab::Request::Parser)
